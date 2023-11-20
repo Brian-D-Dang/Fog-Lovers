@@ -31,57 +31,35 @@ mapbox_access_token = "pk.eyJ1IjoiYnJpYW4tZC1kYW5nIiwiYSI6ImNsbmZsajNqaTA5MGQyc2
 
 # OAHU
 st.header("test text")
-
 station_data_unique_timestamps = cummulative_station_data['timestamp'].unique()
-
-# st.write(station_data_unique_timestamps)
-# make st a select slider and select only unique timestamp values
-
 date_time = st.select_slider(
     "When do you start?",
     options=station_data_unique_timestamps,
 )
 
 filtered_cummulative_station_data = cummulative_station_data[cummulative_station_data['timestamp'] == date_time]
-st.write(filtered_cummulative_station_data)
-st.write((filtered_cummulative_station_data[filtered_cummulative_station_data['sitename'] == 'auwahi']['category']>=1).bool())
-
-test = (filtered_cummulative_station_data[filtered_cummulative_station_data['sitename'] == 'auwahi']['category']>=1).bool()
 
 fig_map = go.Figure()
 
-color='red'
-if (test):
+# TODO use this for loop in later implementation 
+# for x in fog_camera_locations['site']:
+for sitename in ['kaala600m', 'kaala1200m']:
 
-    color = 'green'
-fig_map.add_trace(go.Scattermapbox(
-        name='Current',
-        lat=np.array(fog_camera_locations['x'][5]),
-        lon=np.array(fog_camera_locations['y'][5]),
+    site_information = fog_camera_locations[fog_camera_locations['site'] == sitename]
+    test = (filtered_cummulative_station_data[filtered_cummulative_station_data['sitename'] == sitename]['category']>=1).bool()
+    color='red'
+    if (test):
+        color = 'green'
+    fig_map.add_trace(go.Scattermapbox(
+        lat=np.array(site_information['x']),
+        lon=np.array(site_information['y']),
         mode='markers',
         marker=go.scattermapbox.Marker(
             size=10,
             color=color,
         ),
-        text=fog_camera_locations['site'],
+        text=site_information['site'],
     ))
-
-# if the slider is a specific time, 
-# we find all values with that date time
-# then we check the values of each station, 
-
-
-# fig_map.add_trace(go.Scattermapbox(
-#         name='Current',
-#         lat=fog_camera_locations['x'],
-#         lon=fog_camera_locations['y'],
-#         mode='markers',
-#         marker=go.scattermapbox.Marker(
-#             size=8,
-#             color='red'
-#         ),
-#         text=fog_camera_locations['site'],
-#     ))
 
 fig_map.update_layout(
     hovermode='closest',
