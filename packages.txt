@@ -1,1 +1,1 @@
-plotly
+python3-plotly
