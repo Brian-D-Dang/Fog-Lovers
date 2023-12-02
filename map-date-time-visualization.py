@@ -19,16 +19,30 @@ cummulative_station_data['timestamp'] = pd.to_datetime(cummulative_station_data[
 
 # island selector
 st.header("Fog detection throughout the year")
-island_selectbox = st.selectbox(
-    'Select an island',
-    ('All islands', 'Oahu', 'Maui'))
-
+st.subheader("Select an Island")
+all_islands_button = st.button("All islands", type="primary")
+oahu_button = st.button("Oahu", type="primary")
+maui_button = st.button("Maui", type="primary")
 # island_selectbox = st.selectbox(
 #     'Select an island',
 #     ('All islands', 'Oahu', 'Maui'))
 
 # time selector
 station_data_unique_timestamps = cummulative_station_data['timestamp'].unique()
+# include a date time widget
+# include a time slider
+Year = st.select_slider(
+    "Year",
+    options=[2021,2022,2023],
+)
+Day = st.select_slider(
+    "Date",
+    options=np.arange(1,),
+)
+Month = st.select_slider(
+    "Month",
+    options=station_data_unique_timestamps,
+)
 date_time = st.select_slider(
     "Select a date: format(yyyy-mm-dd hr:min:00)",
     options=station_data_unique_timestamps,
@@ -38,36 +52,54 @@ date_time = st.select_slider(
 filtered_cummulative_station_data = cummulative_station_data[cummulative_station_data['timestamp'] == date_time]
 
 fog_detection_map = go.Figure()
-# TODO use this for loop in later implementation 
-# for x in fog_camera_locations['site']:
 mapbox_access_token = "pk.eyJ1IjoiYnJpYW4tZC1kYW5nIiwiYSI6ImNsbmZsajNqaTA5MGQyc28yZG1uZ3U5aHUifQ.Zre5_G3J5Ee-HbFtizaWoA"
+
+# color types
+color_types = [
+    ["green", 'Fog'],
+    ["red", "No Fog"],
+    ["grey", "Unknown"]
+]
+for x in color_types:
+    fog_detection_map.add_trace(go.Scattermapbox(
+        mode='markers',
+        lon=np.array(0),
+        lat=np.array(0),
+        marker={
+            'size': 10,
+            'color':x[0]
+        },
+        name=x[1],
+        showlegend=True
+    ))
+
+# TODO add code below
+# for x in fog_camera_locations['site']:
 for sitename in ['auwahi', 'haleakalaR', 'kaala600m', 'kaala1200m']:
     site_information = fog_camera_locations[fog_camera_locations['site'] == sitename]
-    test = np.array(filtered_cummulative_station_data[filtered_cummulative_station_data['sitename'] == sitename]['category'])[0] >= 1
-    color='red'
-    if (test):
+    hasFog = np.array(filtered_cummulative_station_data[filtered_cummulative_station_data['sitename'] == sitename]['category'])[0] >= 1
+    color='grey'
+    if (hasFog):
         color = 'green'
+    elif not hasFog:
+        color='red'
     fog_detection_map.add_trace(go.Scattermapbox(
-        # mode = "markers+text+lines",
-        # lon = [-75, -80, -50], lat = [45, 20, -20],
-        # marker = {'size': 20, 'symbol': ["bus", "harbor", "airport"]},
-        # text = ["Bus", "Harbor", "airport"],textposition = "bottom right"))
-        mode='markers+text',
+        mode='markers',
         lon=np.array(site_information['y']),
         lat=np.array(site_information['x']),
         marker={
-            'size': 20, 'symbol': ['bus'],'color':'black'
+            'size': 10,
+            'color':color
         },
-        text=["test"],
-        # textsize=15,
-        # color='black',
-        textposition = "bottom right"))
-
-if island_selectbox == 'Oahu':
+        name=sitename,
+        showlegend=False
+    ))
+# TODO add 3 traces that act as legends
+if oahu_button:
     fog_detection_map_lat = 21.51565
     fog_detection_map_lon = -158.15379
     zoom = 11.5
-elif island_selectbox == 'Maui':
+elif maui_button:
     fog_detection_map_lat = 20.7171 
     fog_detection_map_lon = -156.345
     zoom = 9.5
@@ -78,7 +110,7 @@ else:
 
 fog_detection_map.update_layout(
     mapbox={
-        'style':'outdoors',
+        'style':'basic',
         'accesstoken':mapbox_access_token,
         'center':go.layout.mapbox.Center(
             lat=fog_detection_map_lat,
@@ -86,7 +118,11 @@ fog_detection_map.update_layout(
         ),
         'zoom':zoom,
     },
-    showlegend=False,
+    showlegend=True,
+    dragmode=False,
+    legend_title_text='Legend'
+    # modebar_remove=['zoom', 'pan']
+    # config={'displayModeBar': False},
 )
 
 st.write(fog_detection_map)
