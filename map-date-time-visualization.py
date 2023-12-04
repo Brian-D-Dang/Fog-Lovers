@@ -3,63 +3,78 @@ import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
 import pandas as pd
-
+import datetime
+from streamlit_elements import elements, mui, html
 
 st.set_page_config(layout="wide")
 col1, col2 = st.columns([2,1])
 
-# from datetime import time, datetime
-
 # Load in the CSVs
 fog_camera_locations = pd.read_csv('data/siteinfo/fogvision_camera_locations.csv')
-
 auwahi_predictions = pd.read_csv('data/fogdata/auwahi_predictions.csv')
-haleakala = pd.read_csv('data/fogdata/haleakalaR_predictions.csv')
-kaala600m = pd.read_csv('data/fogdata/kaala600m_predictions.csv')
+# auwahi cleaned
+auwahi_predictions['sitename'].mask(auwahi_predictions['sitename'] == 'auwahiOldLocation', 'auwahi', inplace=True)
+haleakala = pd.read_csv('data/fogdata/haleakala_predictions.csv')
+# haleakala cleaned
+haleakala['sitename'].mask(haleakala['sitename'] == 'haleakala', 'haleakalaR', inplace=True)
+honda = pd.read_csv('data/fogdata/honda_predictions.csv')
+kaala1000m = pd.read_csv('data/fogdata/kaala1000m_predictions.csv')
+# kaala1000 cleaned
+kaala1000m['sitename'].mask(kaala1000m['sitename'] == 'kaala1000mCameraMoved', 'kaala1000m', inplace=True)
 kaala1200m = pd.read_csv('data/fogdata/kaala1200m_predictions.csv')
+# kaala1200m cleaned
+kaala1200m['sitename'].mask(kaala1200m['sitename'] == 'kaala1200mCameraMoved', 'kaala1200m', inplace=True)
 
 # Combine the CSVs into a centralized cummulative CSV
-cummulative_station_data = pd.concat([auwahi_predictions, haleakala, kaala600m, kaala1200m])
+cummulative_station_data = pd.concat([auwahi_predictions, honda, haleakala, kaala1000m, kaala1200m])
 cummulative_station_data['timestamp'] = pd.to_datetime(cummulative_station_data['timestamp'])
-
 # island selector
+
 
 with col1:
     st.header("Fog detection throughout the year")
-    st.subheader("Select an Island")
-    island_subcol1, island_subcol2, island_subcol3 = st.columns([1,1,1])
-    with island_subcol1:
-        all_islands_button = st.button("All islands", type="primary")
-    with island_subcol2:
-        oahu_button = st.button("Oahu", type="primary")
-    with island_subcol3:
-        maui_button = st.button("Maui", type="primary")
-        
-    # island_selectbox = st.selectbox(
-    #     'Select an island',
-    #     ('All islands', 'Oahu', 'Maui'))
-
+    with st.form("form_settings"):
+        form_section1, form_section2, form_section3 = st.columns([3, 1, 1])
+        with form_section1: 
+            st.subheader("Select an island")
+            island_subcol1, island_subcol2, island_subcol3, spacer = st.columns([1,1,1,8])
+            with island_subcol1:
+                all_islands_button = st.button("Both", type="primary")
+                
+            with island_subcol2:
+                oahu_button = st.button("Oahu", type="primary")
+            with island_subcol3:
+                maui_button = st.button("Maui", type="primary")
+            submitted = st.form_submit_button("Submit")
     # time selector
-    station_data_unique_timestamps = cummulative_station_data['timestamp'].unique()
+    # cummulative_station_data = cummulative_station_data.set_i['timestamp'])
+    # station_data_unique_timestamps = cummulative_station_data.sort_index().loc['2021-03-23 00:00:00':'2021-03-23 23:45:00']
+    # st.write("TIMESTAMPS")
+    # st.write(station_data_unique_timestamps)
     # include a date time widget
-    # include a time slider
-    Year = st.select_slider(
-        "Year",
-        options=[2021,2022,2023],
+
+    jan_1 = datetime.date(2021, 3, 22)
+    dec_31 = datetime.date(2022, 8, 2)
+    st.subheader("Select a date")
+    date = st.date_input(
+        "",
+        (jan_1),
+        jan_1,
+        dec_31,
+        format="YYYY-MM-DD",
+        label_visibility='collapsed',
     )
-    Day = st.select_slider(
-        "Date",
-        options=np.arange(1,),
+
+
+    st.subheader("Select a time")
+    time = st.slider(
+        "",
+        min_value=datetime.time(0, 0),
+        max_value=datetime.time(23, 45),
+        label_visibility='collapsed',
     )
-    Month = st.select_slider(
-        "Month",
-        options=station_data_unique_timestamps,
-    )
-    date_time = st.select_slider(
-        "Select a date: format(yyyy-mm-dd hr:min:00)",
-        options=station_data_unique_timestamps,
-    )
-    # st.write(kaala600m)
+
+    date_time = datetime.datetime.combine(date, time)
 
     filtered_cummulative_station_data = cummulative_station_data[cummulative_station_data['timestamp'] == date_time]
 
@@ -78,7 +93,7 @@ with col1:
             lon=np.array(0),
             lat=np.array(0),
             marker={
-                'size': 10,
+                'size': 9,
                 'color':x[0]
             },
             name=x[1],
@@ -87,14 +102,26 @@ with col1:
 
     # TODO add code below
     # for x in fog_camera_locations['site']:
-    for sitename in ['auwahi', 'haleakalaR', 'kaala600m', 'kaala1200m']:
+
+    # hasFog = filtered_cummulative_station_data[filtered_cummulative_station_data['sitename'] == "auwahiOldLocation"]
+
+    # st.write(hasFog.count == 0)
+    for sitename in ['auwahi', 'haleakalaROldLocation', 'haleakalaR', 'honda', 'kaala1000m', 'kaala1200m']:
         site_information = fog_camera_locations[fog_camera_locations['site'] == sitename]
-        hasFog = np.array(filtered_cummulative_station_data[filtered_cummulative_station_data['sitename'] == sitename]['category'])[0] >= 1
-        color='grey'
-        if (hasFog):
-            color = 'green'
-        elif not hasFog:
-            color='red'
+        # DETECT IF SITENAME EXISTS OTHERWISE MAKE IT A NULL VALUE = GREY
+        siteCheck = filtered_cummulative_station_data[filtered_cummulative_station_data['sitename'] == sitename]
+        color = 'green'
+        if len(siteCheck) == 0:
+            color='grey'
+        else:
+            fogCategory = np.array(siteCheck['category'])[0]
+            if fogCategory == 1:
+                color = 'green'
+            elif fogCategory == 0:
+                color='red'
+            elif fogCategory == -999:
+                color='grey'
+    
         fog_detection_map.add_trace(go.Scattermapbox(
             mode='markers',
             lon=np.array(site_information['y']),
@@ -106,7 +133,7 @@ with col1:
             name=sitename,
             showlegend=False
         ))
-    # TODO add 3 traces that act as legends
+
     if oahu_button:
         fog_detection_map_lat = 21.51565
         fog_detection_map_lon = -158.15379
@@ -116,9 +143,9 @@ with col1:
         fog_detection_map_lon = -156.345
         zoom = 9.5
     else:
-        fog_detection_map_lat = 20.6471
-        fog_detection_map_lon = -157.5
-        zoom = 5.5
+        fog_detection_map_lat = 21.09
+        fog_detection_map_lon = -157.3
+        zoom = 7
 
     fog_detection_map.update_layout(
         mapbox={
@@ -133,8 +160,6 @@ with col1:
         showlegend=True,
         dragmode=False,
         legend_title_text='Legend'
-        # modebar_remove=['zoom', 'pan']
-        # config={'displayModeBar': False},
     )
 
     st.write(fog_detection_map)
