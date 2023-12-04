@@ -18,6 +18,7 @@ import pandas as pd
 import datetime
 
 st.set_page_config(layout="wide")
+st.title("Fog Visualizations In Hawaii")
 col1, col2 = st.columns([3,2])
 
 # Load in the CSVs
@@ -43,7 +44,7 @@ cummulative_station_data['timestamp'] = pd.to_datetime(cummulative_station_data[
 sitenames = ['auwahi', 'haleakala', 'honda', 'kaala1000m', 'kaala1200m']
 
 with col1:
-    st.header("Fog detection throughout the year")
+    # st.header("Fog detection throughout the year")
     with st.form("form_settings"):
         form_section1, form_section2, form_section3 = st.columns([1, 1,2])
         with form_section1: 
@@ -157,10 +158,10 @@ with col1:
         dragmode=False,
         width=850,
         height=400,
-        margin=dict(l=20, r=20, t=20, b=20),
+        margin=dict(l=0, r=20, t=10, b=20),
         legend_title_text='Legend'
     )
-
+    st.subheader("Fog detection")
     st.write(fog_detection_map)
 
 with col2:
