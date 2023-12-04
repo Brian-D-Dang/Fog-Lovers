@@ -1,3 +1,13 @@
+import os
+# correcting the current working directory
+basename = os.path.basename(os.getcwd())
+if basename == 'pages':
+    os.chdir(os.path.dirname(os.getcwd())) # this is important we have to change the working directory back one
+elif 'hange' in basename or 'ICS-484' in basename:
+    os.chdir(os.path.join(os.getcwd(), 'FogVision')) # 
+print(os.getcwd())
+
+
 import streamlit as st
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
@@ -6,9 +16,11 @@ import numpy as np
 from glob import glob
 
 def main():
-    st.title('My Streamlit App')
-
+    st.title('yessaih')
+    st.write(os.getcwd())
     data_files = glob('data/fogdata/*.csv')
+    print(data_files)
+    st.write(data_files)
     siteNames = []
     for data_file in data_files:
         firstSplit = data_file.split('\\')
@@ -18,7 +30,7 @@ def main():
     file_selected = None
     for data_file in data_files:
         firstSplit = data_file.split('\\')
-        if site_selected == firstSplit[-1].split('.csv')[0].split('_')[0]:file_selected = data_file
+        if site_selected == firstSplit[-1].split('.csv')[0].split('_')[0]: file_selected = data_file
 
     if not file_selected is None:
         df = pd.read_csv(file_selected)
@@ -79,7 +91,8 @@ def main():
         st.pyplot(fig)
 
     else:
-        st.experimental_rerun()
+        print('fuckina')
+        # st.experimental_rerun()
 
 if __name__ == "__main__":
     main()
