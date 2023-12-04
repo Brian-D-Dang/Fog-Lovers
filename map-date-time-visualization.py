@@ -32,43 +32,20 @@ cummulative_station_data['timestamp'] = pd.to_datetime(cummulative_station_data[
 
 
 with col1:
-    testValue = "maui"
-    # with elements(["multiple_children","style_mui_sx","callbacks_retrieve_data"]):
-
-    # st.write(testValue)
-    # with elements():
-
-    # mui.Box(
-    #     # "test",
-    #     # st.header("Fog detection throughout the year"),
-    #     # st.button("Oahu & Maui", type="primary"),
-    #     mui.Button(
-    #         "Oahu & Maui"
-    #     # variant="contained",
-    #     ),
-    #     mui.Button(
-    #         "Oahu"
-    #     # variant="contained",
-    #     ),
-    #     sx={
-    #         "bgcolor": "background.paper",
-    #         "boxShadow": 1,
-    #         "borderRadius": 2,
-    #         "p": 2,
-    #         "minWidth": 300,
-    #     }
-    # )
     st.header("Fog detection throughout the year")
-    st.subheader("Select an island")
-    island_subcol1, island_subcol2, island_subcol3, spacer = st.columns([1,1,1,8])
-    with island_subcol1:
-        all_islands_button = st.button("Both", type="primary")
-        
-    with island_subcol2:
-        oahu_button = st.button("Oahu", type="primary")
-    with island_subcol3:
-        maui_button = st.button("Maui", type="primary")
-
+    with st.form("form_settings"):
+        form_section1, form_section2, form_section3 = st.columns([3, 1, 1])
+        with form_section1: 
+            st.subheader("Select an island")
+            island_subcol1, island_subcol2, island_subcol3, spacer = st.columns([1,1,1,8])
+            with island_subcol1:
+                all_islands_button = st.button("Both", type="primary")
+                
+            with island_subcol2:
+                oahu_button = st.button("Oahu", type="primary")
+            with island_subcol3:
+                maui_button = st.button("Maui", type="primary")
+            submitted = st.form_submit_button("Submit")
     # time selector
     # cummulative_station_data = cummulative_station_data.set_i['timestamp'])
     # station_data_unique_timestamps = cummulative_station_data.sort_index().loc['2021-03-23 00:00:00':'2021-03-23 23:45:00']
