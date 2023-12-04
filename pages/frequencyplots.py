@@ -41,7 +41,7 @@ def main():
 
    # Define the figure and axes outside the loop
     # fig, axs = plt.subplots(nrows = 2, ncols=1, figsize=(6, 6))
-    fig = plt.figure(figsize=(6, 6))
+    fig = plt.figure(figsize=(6, 10))
     axs = []
     axs.append(fig.add_subplot(2, 1, 1, projection='polar'))
     axs.append(fig.add_subplot(2, 1, 2))
@@ -81,8 +81,8 @@ def main():
                 angles += angles[:1]
 
                 # Set the title for each subplot
-                axs[0].set_title(f'Hourly fog frequency for {site_selected}')
-                plt.xticks(angles[:-1], series.index, color='grey', size=8)
+                axs[0].set_title(f'Hourly fog frequency for {sites_selected}')
+                axs[0].set_xticks(angles[:-1], series.index, color='grey', size=8)
                 axs[0].set_theta_offset(np.pi/2) # rotate the plot by 90 degrees so 0 oclock is at the top
                 axs[0].set_theta_direction(-1) # make the plot go clockwise
                 axs[0].set_rlabel_position(30)
@@ -94,48 +94,34 @@ def main():
                 axs[0].set_yticklabels([])
 
                 # Add radial axes and labels
-                r_ticks = np.linspace(0, max(values), num=5)  # You can change the number of ticks here
+                # y_ticks = np.arange(0, 1.01, 0.20)  # Creates an array from 0 to 1 with a step of 0.20
+                # y_ticks_angles = [x * 2 * np.pi for x in y_ticks]  # Converts the x ticks to angles
+                # axs[0].set_yticks(y_ticks_angles)
+                # axs[0].set_yticklabels([f'{tick:.2f}' for tick in y_ticks], color='grey', size=8)
+                r_ticks = np.linspace(0, 0.9, num=4)#max(values), num=5)  # You can change the number of ticks here
                 axs[0].set_yticks(r_ticks)
                 axs[0].set_yticklabels([f'{tick:.2f}' for tick in r_ticks], color='black', size=8)  # Format the labels as you wish
                 axs[0].yaxis.grid(True)  # Add grid lines for the y-axis
-                axs[0].legend(loc='upper right')
+                axs[0].legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+                # axs[0].legend(loc='lower right')
 
 
 
 
 
             # line chart
-            # df['date'] = df['timestamp'].dt.date
-            # print(df)
-            # daily_frequencies_total = df.groupby('date').size()
-            # daily_frequencies_category1 = df[df['category'] == 1].groupby('date').size()
-            # daily_percentages_category1 = (daily_frequencies_category1 / daily_frequencies_total) * 100
-            # date_range = pd.date_range(start=df['date'].min(), end=df['date'].max())
-            # daily_percentages_category1 = pd.Series(daily_percentages_category1, index=date_range)
-            # print(daily_percentages_category1)
-            # axs[1].plot(daily_percentages_category1.index, daily_percentages_category1.values)
-            # axs[1].xaxis.set_major_locator(mdates.MonthLocator())
-            # axs[1].xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
-            # df['date'] = df['timestamp'].dt.to_period('M')
-            # print(df)
-            # monthly_frequencies_total = df.groupby('date').size()
-            # monthly_frequencies_category1 = df[df['category'] == 1].groupby('date').size()
-            # print(monthly_frequencies_category1)
-            # monthly_percentages_category1 = (monthly_frequencies_category1 / monthly_frequencies_total) * 100
-            # date_range = pd.date_range(start=df['date'].min().to_timestamp(), end=df['date'].max().to_timestamp(), freq='M')
-            # monthly_percentages_category1 = pd.Series(monthly_percentages_category1, index=date_range)
-            # print(monthly_percentages_category1)
-            # axs[1].plot(monthly_percentages_category1.index, monthly_percentages_category1.values)
-            # axs[1].xaxis.set_major_locator(mdates.MonthLocator())
-            # axs[1].xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
             df['date'] = df['timestamp'].dt.to_period('W')
             weekly_frequencies_total = df.groupby('date').size()
             weekly_frequencies_category1 = df[df['category'] == 1].groupby('date').size()
             weekly_percentages_category1 = (weekly_frequencies_category1 / weekly_frequencies_total) * 100
             weekly_percentages_category1 = weekly_percentages_category1.reindex(df['date'].unique(), fill_value=0)
-            axs[1].plot(weekly_percentages_category1.index.to_timestamp(), weekly_percentages_category1.values)
+            axs[1].set_title(f'Weekly fog frequency for {sites_selected}')
+            axs[1].plot(weekly_percentages_category1.index.to_timestamp(), weekly_percentages_category1.values, 'o--')
+            # axs[1].bar(weekly_percentages_category1.index.to_timestamp(), weekly_percentages_category1.values)
             axs[1].xaxis.set_major_locator(mdates.MonthLocator())
             axs[1].xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
+            plt.xticks(rotation=45)
+            axs[1].set_ylabel('Fog Frequency Percentage')
 
 
 
