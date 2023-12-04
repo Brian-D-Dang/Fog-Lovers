@@ -7,7 +7,7 @@ import datetime
 from streamlit_elements import elements, mui, html
 
 st.set_page_config(layout="wide")
-col1, col2 = st.columns([2,1])
+col1, col2 = st.columns([3,2])
 
 # Load in the CSVs
 fog_camera_locations = pd.read_csv('data/siteinfo/fogvision_camera_locations.csv')
@@ -34,18 +34,34 @@ cummulative_station_data['timestamp'] = pd.to_datetime(cummulative_station_data[
 with col1:
     st.header("Fog detection throughout the year")
     with st.form("form_settings"):
-        form_section1, form_section2, form_section3 = st.columns([3, 1, 1])
+        form_section1, form_section2, form_section3 = st.columns([2, 1,2])
         with form_section1: 
             st.subheader("Select an island")
-            island_subcol1, island_subcol2, island_subcol3, spacer = st.columns([1,1,1,8])
-            with island_subcol1:
-                all_islands_button = st.button("Both", type="primary")
-                
-            with island_subcol2:
-                oahu_button = st.button("Oahu", type="primary")
-            with island_subcol3:
-                maui_button = st.button("Maui", type="primary")
-            submitted = st.form_submit_button("Submit")
+            islands_radio = st.radio(
+                "",
+                ["Oahu", "Maui", "Both"],
+                label_visibility='collapsed')
+        with form_section2:
+            jan_1 = datetime.date(2021, 3, 22)
+            dec_31 = datetime.date(2022, 8, 2)
+            st.subheader("Select a date")
+            date = st.date_input(
+                "",
+                (jan_1),
+                jan_1,
+                dec_31,
+                format="YYYY-MM-DD",
+                label_visibility='collapsed',
+            )
+        
+        st.subheader("Select a time")
+        time = st.slider(
+            "",
+            min_value=datetime.time(0, 0),
+            max_value=datetime.time(23, 45),
+            label_visibility='collapsed',
+        )
+        submitted = st.form_submit_button("Submit")
     # time selector
     # cummulative_station_data = cummulative_station_data.set_i['timestamp'])
     # station_data_unique_timestamps = cummulative_station_data.sort_index().loc['2021-03-23 00:00:00':'2021-03-23 23:45:00']
@@ -53,26 +69,6 @@ with col1:
     # st.write(station_data_unique_timestamps)
     # include a date time widget
 
-    jan_1 = datetime.date(2021, 3, 22)
-    dec_31 = datetime.date(2022, 8, 2)
-    st.subheader("Select a date")
-    date = st.date_input(
-        "",
-        (jan_1),
-        jan_1,
-        dec_31,
-        format="YYYY-MM-DD",
-        label_visibility='collapsed',
-    )
-
-
-    st.subheader("Select a time")
-    time = st.slider(
-        "",
-        min_value=datetime.time(0, 0),
-        max_value=datetime.time(23, 45),
-        label_visibility='collapsed',
-    )
 
     date_time = datetime.datetime.combine(date, time)
 
@@ -134,11 +130,11 @@ with col1:
             showlegend=False
         ))
 
-    if oahu_button:
+    if islands_radio == 'Oahu':
         fog_detection_map_lat = 21.51565
         fog_detection_map_lon = -158.15379
         zoom = 11.5
-    elif maui_button:
+    elif islands_radio =='Maui':
         fog_detection_map_lat = 20.7171 
         fog_detection_map_lon = -156.345
         zoom = 9.5
