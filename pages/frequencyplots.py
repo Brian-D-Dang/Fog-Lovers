@@ -102,7 +102,8 @@ def main():
                 axs[0].set_yticks(r_ticks)
                 axs[0].set_yticklabels([f'{tick:.2f}' for tick in r_ticks], color='black', size=8)  # Format the labels as you wish
                 axs[0].yaxis.grid(True)  # Add grid lines for the y-axis
-                axs[0].legend(loc='lower right')
+                axs[0].legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+                # axs[0].legend(loc='lower right')
 
 
 
@@ -114,6 +115,7 @@ def main():
             weekly_frequencies_category1 = df[df['category'] == 1].groupby('date').size()
             weekly_percentages_category1 = (weekly_frequencies_category1 / weekly_frequencies_total) * 100
             weekly_percentages_category1 = weekly_percentages_category1.reindex(df['date'].unique(), fill_value=0)
+            axs[1].set_title(f'Weekly fog frequency for {sites_selected}')
             axs[1].plot(weekly_percentages_category1.index.to_timestamp(), weekly_percentages_category1.values, 'o--')
             # axs[1].bar(weekly_percentages_category1.index.to_timestamp(), weekly_percentages_category1.values)
             axs[1].xaxis.set_major_locator(mdates.MonthLocator())
