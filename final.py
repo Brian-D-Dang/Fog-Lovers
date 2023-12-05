@@ -41,6 +41,7 @@ kaala1200m['sitename'].mask(kaala1200m['sitename'] == 'kaala1200mCameraMoved', '
 # Combine the CSVs into a centralized cummulative CSV
 cummulative_station_data = pd.concat([auwahi_predictions, honda, haleakala, kaala1000m, kaala1200m])
 cummulative_station_data['timestamp'] = pd.to_datetime(cummulative_station_data['timestamp'])
+
 sitenames = ['auwahi', 'haleakala', 'honda', 'kaala1000m', 'kaala1200m']
 
 with col1:
@@ -77,6 +78,7 @@ with col1:
             label_visibility='collapsed',
         )
         submitted = st.form_submit_button("Submit")
+        
     date_time = datetime.datetime.combine(date, time)
 
     filtered_cummulative_station_data = cummulative_station_data[cummulative_station_data['timestamp'] == date_time]
@@ -238,9 +240,6 @@ with col2:
                     axs[0].yaxis.grid(True)  # Add grid lines for the y-axis
                     axs[0].legend(bbox_to_anchor=(1.05, 1), loc='upper left')
                     # axs[0].legend(loc='lower right')
-
-
-
 
 
                 # line chart
