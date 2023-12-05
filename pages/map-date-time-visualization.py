@@ -33,7 +33,7 @@ cummulative_station_data['timestamp'] = pd.to_datetime(cummulative_station_data[
 # with col1:
 st.header("Fog detection throughout the year")
 with st.form("form_settings"):
-    form_section1, form_section2, form_section3 = st.columns([2, 1,2])
+    form_section1, form_section2, form_section3 = st.columns([2, 1])
     with form_section1: 
         st.subheader("Select an island")
         islands_radio = st.radio(
@@ -141,8 +141,6 @@ fog_detection_map.update_layout(
     showlegend=True,
     dragmode=False,
     legend_title_text='Legend',
-    width=1000,
-    height=450,
     margin=dict(l=0, r=20, t=10, b=20),
 )
 
