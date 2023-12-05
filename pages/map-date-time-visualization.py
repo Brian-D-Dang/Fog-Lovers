@@ -33,7 +33,7 @@ cummulative_station_data['timestamp'] = pd.to_datetime(cummulative_station_data[
 # with col1:
 st.header("Fog detection throughout the year")
 with st.form("form_settings"):
-    form_section1, form_section2, form_section3 = st.columns([2, 1])
+    form_section1, form_section2 = st.columns([2, 1])
     with form_section1: 
         st.subheader("Select an island")
         islands_radio = st.radio(
