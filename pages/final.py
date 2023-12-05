@@ -177,7 +177,7 @@ with col2:
             siteNames.append(firstSplit[-1].split('.csv')[0].split('_')[0])
             
         sites_selected = []
-        for x in site_select:
+        for x in sites_select:
             sites_selected.append("data/fogdata/"+x)
         # sites_selected = st.sidebar.multiselect("Select sites", siteNames)
         # st.write(sites_selected)
