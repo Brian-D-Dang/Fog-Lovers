@@ -32,7 +32,7 @@ st.markdown('<p class="big-font">There are some short comings to these tradition
 col3, col4 = st.columns([1,2])
 with col3:
     # st.markdown('<p class="big-font"></p>', unsafe_allow_html=True)
-    st.image(os.path.join('media', 'Kahikinui Fog Screens.jpg'), width=490)
+    st.image(os.path.join('media', 'Kahikinui Fog Screens.jpg'), width=300)
 with col4:
     st.image(os.path.join('media', 'trailcam.jpg'), use_column_width=False)
     
