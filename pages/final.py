@@ -49,7 +49,7 @@ sitenames = ['auwahi', 'haleakala', 'honda', 'kaala1000m', 'kaala1200m']
 with col1:
     # st.header("Fog detection throughout the year")
     with st.form("form_settings"):
-        form_section1, form_section2, form_section3 = st.columns([2, 1,2])
+        form_section1, form_section2, form_section3 = st.columns([1, 1,2])
         with form_section1: 
             st.subheader("Select an island")
             islands_radio = st.radio(
@@ -71,7 +71,7 @@ with col1:
             )
         with form_section3:
             st.subheader("Select a site")
-            sites_selected = st.multiselect("", sitenames, label_visibility='collapsed')
+            sites_select = st.multiselect("", sitenames, label_visibility='collapsed')
         st.subheader("Select a time")
         time = st.slider(
             "",
@@ -107,7 +107,7 @@ with col1:
             showlegend=True
         ))
 
-    for sitename in site_select:
+    for sitename in sites_select:
         site_information = fog_camera_locations[fog_camera_locations['site'] == sitename]
         # DETECT IF SITENAME EXISTS OTHERWISE MAKE IT A NULL VALUE = GREY
         siteCheck = filtered_cummulative_station_data[filtered_cummulative_station_data['sitename'] == sitename]
