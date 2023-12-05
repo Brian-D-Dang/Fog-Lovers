@@ -176,6 +176,7 @@ with col2:
             firstSplit = data_file.split('\\')
             siteNames.append(firstSplit[-1].split('.csv')[0].split('_')[0])
         # sites_selected = st.sidebar.multiselect("Select sites", siteNames)
+        st.write(sites_selected)
 
     # Define the figure and axes outside the loop
         # fig, axs = plt.subplots(nrows = 2, ncols=1, figsize=(6, 6))
