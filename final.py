@@ -42,12 +42,14 @@ kaala1200m['sitename'].mask(kaala1200m['sitename'] == 'kaala1200mCameraMoved', '
 cummulative_station_data = pd.concat([auwahi_predictions, honda, haleakala, kaala1000m, kaala1200m])
 cummulative_station_data['timestamp'] = pd.to_datetime(cummulative_station_data['timestamp'])
 
+
 sitenames = ['auwahi', 'haleakala', 'honda', 'kaala1000m', 'kaala1200m']
+sites_selected = st.sidebar.multiselect("Select sites", sitenames)
 
 with col1:
     # st.header("Fog detection throughout the year")
     with st.form("form_settings"):
-        form_section1, form_section2, form_section3 = st.columns([1, 1,2])
+        form_section1, form_section2, form_section3 = st.columns([2, 2,2])
         with form_section1: 
             st.subheader("Select an island")
             islands_radio = st.radio(
@@ -67,9 +69,9 @@ with col1:
                 format="YYYY-MM-DD",
                 label_visibility='collapsed',
             )
-        with form_section3:
-            st.subheader("Select a site")
-            sites_selected = st.multiselect("", sitenames, label_visibility='collapsed')
+        # with form_section3:
+        #     st.subheader("Select a site")
+        #     # sites_selected = st.multiselect("", sitenames, label_visibility='collapsed')
         st.subheader("Select a time")
         time = st.slider(
             "",
@@ -158,7 +160,7 @@ with col1:
         },
         showlegend=True,
         dragmode=False,
-        width=1000,
+        width=850,
         height=450,
         margin=dict(l=0, r=20, t=10, b=20),
         legend_title_text='Legend'

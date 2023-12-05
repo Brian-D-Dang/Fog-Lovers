@@ -29,7 +29,7 @@ kaala1200m['sitename'].mask(kaala1200m['sitename'] == 'kaala1200mCameraMoved', '
 cummulative_station_data = pd.concat([auwahi_predictions, honda, haleakala, kaala1000m, kaala1200m])
 cummulative_station_data['timestamp'] = pd.to_datetime(cummulative_station_data['timestamp'])
 # island selector
-
+sites_selected = st.sidebar.multiselect("Select sites", siteNames)
 
 with col1:
     st.header("Fog detection throughout the year")
@@ -62,14 +62,6 @@ with col1:
             label_visibility='collapsed',
         )
         submitted = st.form_submit_button("Submit")
-    # time selector
-    # cummulative_station_data = cummulative_station_data.set_i['timestamp'])
-    # station_data_unique_timestamps = cummulative_station_data.sort_index().loc['2021-03-23 00:00:00':'2021-03-23 23:45:00']
-    # st.write("TIMESTAMPS")
-    # st.write(station_data_unique_timestamps)
-    # include a date time widget
-
-
     date_time = datetime.datetime.combine(date, time)
 
     filtered_cummulative_station_data = cummulative_station_data[cummulative_station_data['timestamp'] == date_time]
@@ -96,12 +88,6 @@ with col1:
             showlegend=True
         ))
 
-    # TODO add code below
-    # for x in fog_camera_locations['site']:
-
-    # hasFog = filtered_cummulative_station_data[filtered_cummulative_station_data['sitename'] == "auwahiOldLocation"]
-
-    # st.write(hasFog.count == 0)
     for sitename in ['auwahi', 'haleakalaROldLocation', 'haleakalaR', 'honda', 'kaala1000m', 'kaala1200m']:
         site_information = fog_camera_locations[fog_camera_locations['site'] == sitename]
         # DETECT IF SITENAME EXISTS OTHERWISE MAKE IT A NULL VALUE = GREY
