@@ -144,7 +144,7 @@ with col1:
     else:
         fog_detection_map_lat = 21.09
         fog_detection_map_lon = -157.3
-        zoom = 7
+        zoom = 7.6
 
     fog_detection_map.update_layout(
         mapbox={
@@ -158,8 +158,8 @@ with col1:
         },
         showlegend=True,
         dragmode=False,
-        width=850,
-        height=400,
+        width=1000,
+        height=450,
         margin=dict(l=0, r=20, t=10, b=20),
         legend_title_text='Legend'
     )
@@ -272,3 +272,30 @@ with col2:
 
     if __name__ == "__main__":
         main()
+
+st.markdown("""
+<style>
+.big-font {
+    font-size:24px !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.title('Fog: an Important Water Reasource')
+col1, col2 = st.columns([2,2])
+with col1:
+    st.header('Cloud water interception (CWI)')
+    # st.write('')
+    st.markdown('<p class="big-font">The process by which water droplets within clouds, carried by winds, are captured and deposited onto vegetation and other encountered obstacles. This accumulated water then drips to the ground, supplementing rainfall and contributing to overall water availability. Thus, fog is a crucial water resource on mountainous islands such as the Hawaiian Islands, where it has been studied for over 70 years (DeLay and Giambelluca, 2011). However, there are practical challenges to measuring fog’s contribution to the water balance.</p>', unsafe_allow_html=True)
+with col2:
+    st.image(os.path.join('media', 'CWI-Han-Tseng-1-1024x765.png'), width=600)
+
+st.header('Traditional Collection methods')
+st.markdown('<p class="big-font">Traditionally fog has been measured using mechanical collectors, sometimes referred to as fog gauges, as well as canopy water balance measurements. See image of fog catchment device below.</p>', unsafe_allow_html=True)
+st.markdown('<p class="big-font">There are some short comings to these traditional techniques. Such as contamination with wind-blow rain and their equitment footprint. Trail Camers offer a low-cost method to observe fog presence. Train cameras can be used to augment traditional equitment installations providing increased spatial coverage.</p>', unsafe_allow_html=True)
+col3, col4 = st.columns([1,2])
+with col3:
+    # st.markdown('<p class="big-font"></p>', unsafe_allow_html=True)
+    st.image(os.path.join('media', 'Kahikinui Fog Screens.jpg'), width=490)
+with col4:
+    st.image(os.path.join('media', 'trailcam.jpg'), use_column_width=False)

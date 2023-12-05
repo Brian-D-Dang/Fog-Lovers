@@ -4,4 +4,3 @@ pandas
 numpy
 plotly
 glob2
-streamlit-elements==0.1.*
