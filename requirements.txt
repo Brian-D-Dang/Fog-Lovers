@@ -4,3 +4,5 @@ pandas
 numpy
 plotly
 glob2
+datetime
+os
