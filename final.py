@@ -116,11 +116,11 @@ with col1:
             color='grey'
         else:
             fogCategory = np.array(siteCheck['category'])[0]
-            if fogCategory == 1:
+            if fogCategory == 1.0:
                 color = 'green'
-            elif fogCategory == 0:
+            elif fogCategory == 0.0:
                 color='red'
-            elif fogCategory == -999:
+            elif fogCategory == -999.0:
                 color='grey'
     
         fog_detection_map.add_trace(go.Scattermapbox(
