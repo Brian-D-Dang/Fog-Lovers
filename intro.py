@@ -8,7 +8,7 @@ elif 'hange' in basename or 'ICS-484' in basename:
 print(os.getcwd())
 import streamlit as st
 
-
+st.set_page_config(layout="wide")
 st.markdown("""
 <style>
 .big-font {
