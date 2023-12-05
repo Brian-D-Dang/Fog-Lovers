@@ -4,7 +4,6 @@ import plotly.graph_objects as go
 import numpy as np
 import pandas as pd
 import datetime
-from streamlit_elements import elements, mui, html
 
 st.set_page_config(layout="wide")
 col1, col2 = st.columns([3,2])
@@ -29,7 +28,7 @@ kaala1200m['sitename'].mask(kaala1200m['sitename'] == 'kaala1200mCameraMoved', '
 cummulative_station_data = pd.concat([auwahi_predictions, honda, haleakala, kaala1000m, kaala1200m])
 cummulative_station_data['timestamp'] = pd.to_datetime(cummulative_station_data['timestamp'])
 # island selector
-sites_selected = st.sidebar.multiselect("Select sites", siteNames)
+
 
 with col1:
     st.header("Fog detection throughout the year")
