@@ -44,7 +44,7 @@ cummulative_station_data['timestamp'] = pd.to_datetime(cummulative_station_data[
 
 
 sitenames = ['auwahi', 'haleakala', 'honda', 'kaala1000m', 'kaala1200m']
-sites_selected = st.sidebar.multiselect("Select sites", sitenames)
+site_select = st.sidebar.multiselect("Select sites", sitenames)
 
 with col1:
     # st.header("Fog detection throughout the year")
@@ -107,7 +107,7 @@ with col1:
             showlegend=True
         ))
 
-    for sitename in sites_selected:
+    for sitename in site_select:
         site_information = fog_camera_locations[fog_camera_locations['site'] == sitename]
         # DETECT IF SITENAME EXISTS OTHERWISE MAKE IT A NULL VALUE = GREY
         siteCheck = filtered_cummulative_station_data[filtered_cummulative_station_data['sitename'] == sitename]
@@ -175,6 +175,10 @@ with col2:
         for data_file in data_files:
             firstSplit = data_file.split('\\')
             siteNames.append(firstSplit[-1].split('.csv')[0].split('_')[0])
+            
+        sites_selected = []
+        for x in site_select:
+            sites_selected.append("data/fogdata"+x)
         # sites_selected = st.sidebar.multiselect("Select sites", siteNames)
         st.write(sites_selected)
 
