@@ -1,11 +1,11 @@
-# import os
-# # correcting the current working directory
-# basename = os.path.basename(os.getcwd())
-# if basename == 'pages':
-#     os.chdir(os.path.dirname(os.getcwd())) # this is important we have to change the working directory back one
-# elif 'hange' in basename or 'ICS-484' in basename:
-#     os.chdir(os.path.join(os.getcwd(), 'FogVision')) # 
-# print(os.getcwd())
+import os
+# correcting the current working directory
+basename = os.path.basename(os.getcwd())
+if basename == 'pages':
+    os.chdir(os.path.dirname(os.getcwd())) # this is important we have to change the working directory back one
+elif 'hange' in basename or 'ICS-484' in basename:
+    os.chdir(os.path.join(os.getcwd(), 'FogVision')) # 
+print(os.getcwd())
 
 import streamlit as st
 import matplotlib.pyplot as plt
