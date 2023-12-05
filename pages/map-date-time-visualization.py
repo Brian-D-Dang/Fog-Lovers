@@ -140,7 +140,10 @@ fog_detection_map.update_layout(
     },
     showlegend=True,
     dragmode=False,
-    legend_title_text='Legend'
+    legend_title_text='Legend',
+    width=1000,
+    height=450,
+    margin=dict(l=0, r=20, t=10, b=20),
 )
 
 st.write(fog_detection_map)
