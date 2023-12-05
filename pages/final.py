@@ -178,7 +178,7 @@ with col2:
             
         sites_selected = []
         for x in site_select:
-            sites_selected.append("data/fogdata"+x)
+            sites_selected.append("data/fogdata/"+x)
         # sites_selected = st.sidebar.multiselect("Select sites", siteNames)
         st.write(sites_selected)
 
