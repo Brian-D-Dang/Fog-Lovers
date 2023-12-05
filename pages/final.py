@@ -44,12 +44,12 @@ cummulative_station_data['timestamp'] = pd.to_datetime(cummulative_station_data[
 
 
 sitenames = ['auwahi', 'haleakala', 'honda', 'kaala1000m', 'kaala1200m']
-site_select = st.sidebar.multiselect("Select sites", sitenames)
+# site_select = st.sidebar.multiselect("Select sites", sitenames)
 
 with col1:
     # st.header("Fog detection throughout the year")
     with st.form("form_settings"):
-        form_section1, form_section2, form_section3 = st.columns([2, 2,2])
+        form_section1, form_section2, form_section3 = st.columns([2, 1,2])
         with form_section1: 
             st.subheader("Select an island")
             islands_radio = st.radio(
@@ -69,9 +69,9 @@ with col1:
                 format="YYYY-MM-DD",
                 label_visibility='collapsed',
             )
-        # with form_section3:
-        #     st.subheader("Select a site")
-        #     # sites_selected = st.multiselect("", sitenames, label_visibility='collapsed')
+        with form_section3:
+            st.subheader("Select a site")
+            # sites_selected = st.multiselect("", sitenames, label_visibility='collapsed')
         st.subheader("Select a time")
         time = st.slider(
             "",
@@ -180,7 +180,7 @@ with col2:
         for x in site_select:
             sites_selected.append("data/fogdata/"+x)
         # sites_selected = st.sidebar.multiselect("Select sites", siteNames)
-        st.write(sites_selected)
+        # st.write(sites_selected)
 
     # Define the figure and axes outside the loop
         # fig, axs = plt.subplots(nrows = 2, ncols=1, figsize=(6, 6))
