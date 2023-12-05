@@ -28,8 +28,8 @@ auwahi_predictions = pd.read_csv('data/fogdata/auwahi_predictions.csv')
 auwahi_predictions['sitename'].mask(auwahi_predictions['sitename'] == 'auwahiOldLocation', 'auwahi', inplace=True)
 haleakala = pd.read_csv('data/fogdata/haleakala_predictions.csv')
 # haleakala cleaned
-haleakala['sitename'].mask(haleakala['sitename'] == 'haleakalaR', 'haleakalaa', inplace=True)
-haleakala['sitename'].mask(haleakala['sitename'] == 'haleakalaROldLocation', 'haleakalaa', inplace=True)
+haleakala['sitename'].mask(haleakala['sitename'] == 'haleakalaR', 'haleakala', inplace=True)
+haleakala['sitename'].mask(haleakala['sitename'] == 'haleakalaROldLocation', 'haleakala', inplace=True)
 honda = pd.read_csv('data/fogdata/honda_predictions.csv')
 kaala1000m = pd.read_csv('data/fogdata/kaala1000m_predictions.csv')
 # kaala1000 cleaned
@@ -116,11 +116,11 @@ with col1:
             color='grey'
         else:
             fogCategory = np.array(siteCheck['category'])[0]
-            if fogCategory == 1.0:
+            if fogCategory == 1:
                 color = 'green'
-            elif fogCategory == 0.0:
+            elif fogCategory == 0:
                 color='red'
-            elif fogCategory == -999.0:
+            elif fogCategory == -999:
                 color='grey'
     
         fog_detection_map.add_trace(go.Scattermapbox(
