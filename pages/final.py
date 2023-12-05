@@ -71,7 +71,7 @@ with col1:
             )
         with form_section3:
             st.subheader("Select a site")
-            # sites_selected = st.multiselect("", sitenames, label_visibility='collapsed')
+            sites_selected = st.multiselect("", sitenames, label_visibility='collapsed')
         st.subheader("Select a time")
         time = st.slider(
             "",
